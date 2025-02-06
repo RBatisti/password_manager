@@ -28,7 +28,6 @@ public class CreateUserController {
 
     @FXML
     private void create() {
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaa");
         if (Objects.equals(passwordField1.getText(), "") || Objects.equals(passwordField2.getText(), "") || Objects.equals(email.getText(), "")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");

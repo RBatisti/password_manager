@@ -175,7 +175,6 @@ public class LoggedController implements Initializable {
 
     @FXML
     private void delete() {
-        System.out.println(getIdLogin());
         DataBaseUtil.deleteLogin(getIdLogin());
         setUser(UserRepository.loadLogins(user.getID(), user.getKeyLogin()));
         showElements(false);

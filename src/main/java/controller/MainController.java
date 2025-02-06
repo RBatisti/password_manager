@@ -27,8 +27,6 @@ public class MainController {
 
     @FXML
     public void goToLogged() {
-        //if (checkUser(idField.getText(), passwordField.getText()))
-
         if (Objects.equals(emailField.getText(), "") || Objects.equals(passwordField.getText(), "")) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -58,10 +56,7 @@ public class MainController {
     }
 
     @FXML
-    public void goToCreate(ActionEvent actionEvent) {
-        System.out.println(emailField.getText());
-        System.out.println(passwordField.getText());
-
+    public void goToCreate() {
         Main.changeScreen("create");
     }
 }

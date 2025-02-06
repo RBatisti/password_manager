@@ -29,28 +29,6 @@ public class AESManager {
     }
 
 
-    public static String decrypt(byte[] key, String encryptedText) {
-        try {
-            byte[] encriptedWithIV = Base64.getDecoder().decode(encryptedText);
-            byte[] iv = new byte[16];
-
-            System.arraycopy(encriptedWithIV, 0, iv, 0, iv.length);
-            IvParameterSpec ivSpec = new IvParameterSpec(iv);
-
-            byte[] encriptedBytes = new byte[encriptedWithIV.length - iv.length];
-            System.arraycopy(encriptedWithIV, iv.length, encriptedBytes, 0, encriptedBytes.length);
-
-            SecretKey secretKey = new SecretKeySpec(key, "AES");
-            Cipher cipher = Cipher.getInstance("AES", new BouncyCastleProvider());
-
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-            byte[] decrypted = cipher.doFinal(encriptedBytes);
-
-            return new String(decrypted);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
     public static String decrypt(byte[] key, String encryptedText, Cipher cipher) {
         try {
             byte[] encriptedWithIV = Base64.getDecoder().decode(encryptedText);

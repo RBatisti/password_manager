@@ -66,7 +66,6 @@ public class Main extends Application {
                 break;
 
             case "logged":
-                System.out.println();
                 stage.setScene(loggedScene);
                 break;
 

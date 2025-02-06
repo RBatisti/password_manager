@@ -20,8 +20,8 @@ public class UserRepository {
     public static void createUser(String email, String password) {
 
         byte[] salt = util.Random.generateSalt();
-        byte[] hashPassword = SCrypt.generate(password.getBytes(), salt, Config.COST_FACTOR, Config.BLOCK_SIZE, Config.PARALLELIZATION_USER, Config.KEY_LENGTH);
-        byte[] hashEmail = SCrypt.generate(email.getBytes(), Config.STANDART_SALT, Config.COST_FACTOR, Config.BLOCK_SIZE, Config.PARALLELIZATION_USER, Config.KEY_LENGTH);
+        byte[] hashPassword = SCryptManager.generateUser(password, salt);
+        byte[] hashEmail = SCryptManager.generateUser(email, Config.STANDART_SALT);
 
         String hashPasswordBase64 = Base64.getEncoder().encodeToString(hashPassword);
         String hashEmailBase64 = Base64.getEncoder().encodeToString(hashEmail);
@@ -32,17 +32,14 @@ public class UserRepository {
 
 
     public static String standartHash(String text) {
-        byte[] hash = SCrypt.generate(text.getBytes(), Config.STANDART_SALT, Config.COST_FACTOR, Config.BLOCK_SIZE, Config.PARALLELIZATION_USER, Config.KEY_LENGTH);
+        byte[] hash = SCryptManager.generateUser(text, Config.STANDART_SALT);
         return Base64.getEncoder().encodeToString(hash);
     }
+
 
     public static String passwordHash(String password, int id) {
-        byte[] hash = SCrypt.generate(password.getBytes(), getSaltLogin(id), Config.COST_FACTOR, Config.BLOCK_SIZE, Config.PARALLELIZATION_USER, Config.KEY_LENGTH);
+        byte[] hash = SCryptManager.generateUser(password, getSaltLogin(id));
         return Base64.getEncoder().encodeToString(hash);
-    }
-
-    public static byte[] keyLogin(String password, int id) {
-        return SCrypt.generate(password.getBytes(), getSaltLogin(id), Config.COST_FACTOR, Config.BLOCK_SIZE, Config.PARALLELIZATION_LOGIN, Config.KEY_LENGTH);
     }
 
 
@@ -102,7 +99,5 @@ public class UserRepository {
         String noteEncrypted = AESManager.encrypt(keyLogin, note);
 
         DataBaseUtil.saveLogin(userID, passwordEncrypted, loginEncrypted, serviceEncrypted, noteEncrypted);
-
-        System.out.println();;
     }
 }
