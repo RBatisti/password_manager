@@ -7,7 +7,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
-import model.User;
 import util.DataBaseUtil;
 import util.UserRepository;
 
@@ -61,6 +60,7 @@ public class LoggedController implements Initializable {
         loginField.setText("");
         passwordField.setText("");
         noteField.setText("");
+        SessionManager.getInstance().loggout();
         Main.changeScreen("main");
     }
 
