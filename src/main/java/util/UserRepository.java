@@ -43,7 +43,7 @@ public class UserRepository {
     }
 
 
-    public static User loadLogins(int userID, byte[] keyLogin) {
+    public static User getUser(int userID, byte[] keyLogin) {
         try {
             Connection connection = DB.getConnection();
 

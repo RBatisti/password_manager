@@ -1,5 +1,6 @@
 package controller;
 
+import Session.SessionManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -37,8 +38,8 @@ public class CreateLoginController {
             alert.showAndWait();
             return;
         }
-        UserRepository.createLogin(Main.getKeyLogin(), serviceNameField.getText(), loginField.getText(), passwordField.getText(), noteField.getText(), Main.getID());
-        LoggedController.getInstance().setUser(UserRepository.loadLogins(Main.getID(), Main.getKeyLogin()));
+        UserRepository.createLogin(SessionManager.getInstance().getUser().getKeyLogin(), serviceNameField.getText(), loginField.getText(), passwordField.getText(), noteField.getText(), SessionManager.getInstance().getUser().getID());
+        SessionManager.getInstance().setUser(UserRepository.getUser(SessionManager.getInstance().getUser().getID(), SessionManager.getInstance().getUser().getKeyLogin()));
         serviceNameField.setText("");
         loginField.setText("");
         passwordField.setText("");

@@ -1,5 +1,6 @@
 package controller;
 
+import Session.SessionManager;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,18 +17,16 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoggedController implements Initializable {
-
     private static LoggedController instance;
 
-    private User user;
-    private ArrayList<ArrayList<String>> logins;
+    public LoggedController() {}
 
-    public void setUser(User user) {
-        this.user = user;
-        this.logins = user.getLogins();
-        setList();
+    public static LoggedController getInstance() {
+        if (instance == null) {
+            instance = new LoggedController();
+        }
+        return instance;
     }
-
     @FXML
     private AnchorPane anchorInfo;
 
@@ -55,10 +54,6 @@ public class LoggedController implements Initializable {
         listView.getSelectionModel().selectedItemProperty().addListener(this::changed);
     }
 
-    public static LoggedController getInstance() {
-        return instance;
-    }
-
     @FXML
     private void goToMain() {
         showElements(false);
@@ -75,18 +70,16 @@ public class LoggedController implements Initializable {
         Main.changeScreen("createLogin");
     }
 
-    private int currentAcess;
-
     @FXML
     private void showElements(boolean show) {
         anchorInfo.setVisible(show);
         anchorInfo.setManaged(show);
     }
 
-
+    @FXML
     public void setList() {
         listView.getItems().clear();
-        for (ArrayList<String> arrayListLogin : logins) {
+        for (ArrayList<String> arrayListLogin : SessionManager.getInstance().getUser().getLogins()) {
             listView.getItems().add(arrayListLogin.getFirst());
         }
     }
@@ -94,17 +87,18 @@ public class LoggedController implements Initializable {
     public void setElement(int index) {
         showElements(true);
 
-        serviceNameField.setText(logins.get(index).get(0));
-        loginField.setText(logins.get(index).get(1));
-        passwordField.setText(logins.get(index).get(2));
-        noteField.setText(logins.get(index).get(3));
+        ArrayList<String> logins = SessionManager.getInstance().getUser().getLogins().get(index);
+
+        serviceNameField.setText(logins.get(0));
+        loginField.setText(logins.get(1));
+        passwordField.setText(logins.get(2));
+        noteField.setText(logins.get(3));
     }
 
     public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
         if (listView.getSelectionModel().getSelectedIndex() != -1) {
             notEditable();
-            currentAcess = listView.getSelectionModel().getSelectedIndex();
-            setElement(currentAcess);
+            setElement(listView.getSelectionModel().getSelectedIndex());
         }
     }
 
@@ -133,7 +127,8 @@ public class LoggedController implements Initializable {
     }
 
     private int getIdLogin() {
-        return Integer.parseInt(logins.get(listView.getSelectionModel().getSelectedIndex()).get(4));
+
+        return Integer.parseInt(SessionManager.getInstance().getUser().getLogins().get(listView.getSelectionModel().getSelectedIndex()).get(4));
     }
 
     @FXML
@@ -145,25 +140,25 @@ public class LoggedController implements Initializable {
             alert.setHeaderText("The fields cannot are empty");
             alert.showAndWait();
         } else if (listView.getSelectionModel().getSelectedIndex() != -1) {
-            if (!logins.get(listView.getSelectionModel().getSelectedIndex()).get(0).equals(serviceNameField.getText())) {
-                DataBaseUtil.update(user.getKeyLogin(), serviceNameField.getText(), "service_name", getIdLogin());
+            if (!SessionManager.getInstance().getUser().getLogins().get(listView.getSelectionModel().getSelectedIndex()).get(0).equals(serviceNameField.getText())) {
+                DataBaseUtil.update(SessionManager.getInstance().getUser().getKeyLogin(), serviceNameField.getText(), "service_name", getIdLogin());
                 changed = true;
             }
-            if (!logins.get(listView.getSelectionModel().getSelectedIndex()).get(1).equals(loginField.getText())) {
-                DataBaseUtil.update(user.getKeyLogin(), loginField.getText(), "login", getIdLogin());
+            if (!SessionManager.getInstance().getUser().getLogins().get(listView.getSelectionModel().getSelectedIndex()).get(1).equals(loginField.getText())) {
+                DataBaseUtil.update(SessionManager.getInstance().getUser().getKeyLogin(), loginField.getText(), "login", getIdLogin());
                 changed = true;
             }
-            if (!logins.get(listView.getSelectionModel().getSelectedIndex()).get(2).equals(passwordField.getText())) {
-                DataBaseUtil.update(user.getKeyLogin(), passwordField.getText(), "password", getIdLogin());
+            if (!SessionManager.getInstance().getUser().getLogins().get(listView.getSelectionModel().getSelectedIndex()).get(2).equals(passwordField.getText())) {
+                DataBaseUtil.update(SessionManager.getInstance().getUser().getKeyLogin(), passwordField.getText(), "password", getIdLogin());
                 changed = true;
             }
-            if (!logins.get(listView.getSelectionModel().getSelectedIndex()).get(3).equals(noteField.getText())) {
-                DataBaseUtil.update(user.getKeyLogin(), noteField.getText(), "note", getIdLogin());
+            if (!SessionManager.getInstance().getUser().getLogins().get(listView.getSelectionModel().getSelectedIndex()).get(3).equals(noteField.getText())) {
+                DataBaseUtil.update(SessionManager.getInstance().getUser().getKeyLogin(), noteField.getText(), "note", getIdLogin());
                 changed = true;
             }
             if (changed) {
                 notEditable();
-                setUser(UserRepository.loadLogins(user.getID(), user.getKeyLogin()));
+                SessionManager.getInstance().setUser(UserRepository.getUser(SessionManager.getInstance().getUser().getID(), SessionManager.getInstance().getUser().getKeyLogin()));
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Sucess");
                 alert.setHeaderText("The data was updated successfully");
@@ -176,7 +171,7 @@ public class LoggedController implements Initializable {
     @FXML
     private void delete() {
         DataBaseUtil.deleteLogin(getIdLogin());
-        setUser(UserRepository.loadLogins(user.getID(), user.getKeyLogin()));
+        SessionManager.getInstance().setUser(UserRepository.getUser(SessionManager.getInstance().getUser().getID(), SessionManager.getInstance().getUser().getKeyLogin()));
         showElements(false);
     }
 

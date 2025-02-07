@@ -3,14 +3,20 @@ package model;
 import java.util.ArrayList;
 
 public class User {
-    private final int ID;
-    private final ArrayList<ArrayList<String>> logins;
+    private int ID;
+    private ArrayList<ArrayList<String>> logins;
     private final byte[] keyLogin;
 
 
     public User(int ID, ArrayList<ArrayList<String>> logins, byte[] keyLogins) {
         this.ID = ID;
         this.logins = logins;
+        this.keyLogin = keyLogins;
+    }
+
+
+    public User(int ID, byte[] keyLogins) {
+        this.ID = ID;
         this.keyLogin = keyLogins;
     }
 
@@ -27,5 +33,13 @@ public class User {
 
     public byte[] getKeyLogin() {
         return keyLogin;
+    }
+
+    public void setID(int i) {
+        this.ID = i;
+    }
+
+    public void setLogins(ArrayList<ArrayList<String>> logins) {
+        this.logins = logins;
     }
 }

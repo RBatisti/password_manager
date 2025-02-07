@@ -1,15 +1,13 @@
 package main;
 
+import controller.LoggedController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import model.User;
 
-
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Main extends Application {
@@ -21,7 +19,6 @@ public class Main extends Application {
     private static Scene createUserScene;
     private static Scene createLoginScene;
 
-    private static User user;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,6 +63,7 @@ public class Main extends Application {
                 break;
 
             case "logged":
+                LoggedController.getInstance().setList();
                 stage.setScene(loggedScene);
                 break;
 
@@ -79,17 +77,6 @@ public class Main extends Application {
         }
     }
 
-    public static void setUser(int userID, ArrayList<ArrayList<String>> arrayLogin, byte[] keyLogin) {
-        user = new User(userID, arrayLogin, keyLogin);
-    }
-
-    public static byte[] getKeyLogin() {
-        return user.getKeyLogin();
-    }
-
-    public static int getID() {
-        return user.getID();
-    }
 
     public static void main(String[] args) {
         launch(args);

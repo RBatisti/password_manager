@@ -1,5 +1,6 @@
 package controller;
 
+import Session.SessionManager;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -15,9 +16,6 @@ import java.util.Objects;
 
 
 public class MainController {
-
-    private Stage stage;
-
     @FXML
     private TextField emailField;
 
@@ -39,9 +37,8 @@ public class MainController {
         if (id != -1) {
             if (DataBaseUtil.checkLogin(id, Objects.requireNonNull(UserRepository.passwordHash(passwordField.getText(), id)))) {
                 byte[] keyLogin = SCryptManager.generateLogin(passwordField.getText(), DataBaseUtil.getSaltLogin(id));
-                Main.setUser(id, DataBaseUtil.getLogins(id), keyLogin);
+                SessionManager.getInstance().setUser(UserRepository.getUser(id, keyLogin));
 
-                LoggedController.getInstance().setUser(UserRepository.loadLogins(id, keyLogin));
                 Main.changeScreen("logged");
                 emailField.setText("");
                 passwordField.setText("");
