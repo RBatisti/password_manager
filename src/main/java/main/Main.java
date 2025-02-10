@@ -1,6 +1,7 @@
 package main;
 
 import controller.LoggedController;
+import dao.DB;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,33 +22,40 @@ public class Main extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        stage = primaryStage;
+    public void start(Stage primaryStage) {
+        try {
+            stage = primaryStage;
 
-        // Carregando as telas
-        mainScene = loadScene("/view/mainView.fxml");
-        loggedScene = loadScene("/view/loggedView.fxml");
-        createUserScene = loadScene("/view/createView.fxml");
-        createLoginScene = loadScene("/view/createLoginView.fxml");
+            // Carregando as telas
+            mainScene = loadScene("/view/mainView.fxml");
+            loggedScene = loadScene("/view/loggedView.fxml");
+            createUserScene = loadScene("/view/createView.fxml");
+            createLoginScene = loadScene("/view/createLoginView.fxml");
 
-        // Título
-        primaryStage.setTitle("Password Manager");
+            // Título
+            primaryStage.setTitle("Password Manager");
 
-        // Adicionando o ícone
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/key.png")).toExternalForm());
-        primaryStage.getIcons().add(image);
+            // Adicionando o ícone
+            Image image = new Image(Objects.requireNonNull(getClass().getResource("/images/key.png")).toExternalForm());
+            primaryStage.getIcons().add(image);
 
-        // Configura a janela
-        primaryStage.setScene(mainScene);
+            // Configura a janela
+            primaryStage.setScene(mainScene);
 
-        // Define o tamanho mínimo da janela
-        primaryStage.setMinWidth(500);
-        primaryStage.setMinHeight(600);
-        primaryStage.setMaxWidth(500);
-        primaryStage.setMaxHeight(600);
+            // Define o tamanho da janela
+            primaryStage.setMinWidth(500);
+            primaryStage.setMinHeight(600);
+            primaryStage.setMaxWidth(500);
+            primaryStage.setMaxHeight(600);
 
-        // Exibe a janela
-        primaryStage.show();
+            // Exibe a janela
+            primaryStage.show();
+
+            // Encerrar a conexão com o banco de dados
+            Runtime.getRuntime().addShutdownHook(new Thread(DB::closeConnection));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private Scene loadScene(String path) throws Exception {

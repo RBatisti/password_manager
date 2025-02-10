@@ -46,28 +46,6 @@ public class DB {
     }
 
 
-    public static void closeResultSet(ResultSet resultSet) {
-        if (resultSet != null) {
-            try {
-                resultSet.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        }
-    }
-
-
-    public static void closeStatement(Statement statement) {
-        if (statement != null) {
-            try {
-                statement.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-        }
-    }
-
-
     private static Properties loadProperties() {
         try (FileInputStream fs = new FileInputStream("src/main/java/config/db.properties")){
             Properties props = new Properties();
