@@ -8,6 +8,8 @@ import main.Main;
 import util.DataBaseUtil;
 import util.UserRepository;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.Objects;
 
 public class CreateUserController {
@@ -49,6 +51,15 @@ public class CreateUserController {
             passwordField1.setText("");
             passwordField2.setText("");
             goToMain();
+        }
+    }
+
+    @FXML
+    public void goToGitHub() {
+        try {
+            Desktop.getDesktop().browse(java.net.URI.create("https://github.com/RBatisti/password_manager"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

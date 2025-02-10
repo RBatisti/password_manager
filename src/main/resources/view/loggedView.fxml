@@ -11,7 +11,7 @@
             <menus>
                 <Menu mnemonicParsing="false" text="Help">
                     <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
+                        <MenuItem mnemonicParsing="false" onAction="#goToGitHub" text="About" />
                     </items>
                 </Menu>
             </menus>

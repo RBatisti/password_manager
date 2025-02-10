@@ -5,11 +5,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import main.Main;
 import util.DataBaseUtil;
 import util.UserRepository;
 
+import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -179,6 +183,15 @@ public class LoggedController implements Initializable {
     private void hide() {
         if (!Objects.equals(serviceNameField.getText(), "")) {
             showElements(!anchorInfo.isVisible());
+        }
+    }
+
+    @FXML
+    public void goToGitHub() {
+        try {
+            Desktop.getDesktop().browse(java.net.URI.create("https://github.com/RBatisti/password_manager"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

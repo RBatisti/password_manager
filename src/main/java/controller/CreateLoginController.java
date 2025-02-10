@@ -8,6 +8,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import main.Main;
 import util.UserRepository;
+
+import java.awt.*;
+import java.io.IOException;
 import java.util.Objects;
 
 public class CreateLoginController {
@@ -45,5 +48,14 @@ public class CreateLoginController {
         passwordField.setText("");
         noteField.setText("");
         goToLogged();
+    }
+
+    @FXML
+    public void goToGitHub() {
+        try {
+            Desktop.getDesktop().browse(java.net.URI.create("https://github.com/RBatisti/password_manager"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

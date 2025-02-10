@@ -12,6 +12,10 @@ import util.DataBaseUtil;
 import util.SCryptManager;
 import util.UserRepository;
 
+import java.awt.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Objects;
 
 
@@ -55,5 +59,14 @@ public class MainController {
     @FXML
     public void goToCreate() {
         Main.changeScreen("create");
+    }
+
+    @FXML
+    public void goToGitHub() {
+        try {
+            Desktop.getDesktop().browse(java.net.URI.create("https://github.com/RBatisti/password_manager"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

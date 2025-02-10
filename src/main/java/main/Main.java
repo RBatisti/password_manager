@@ -25,14 +25,10 @@ public class Main extends Application {
         stage = primaryStage;
 
         // Carregando as telas
-        Parent fxmlMain = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/mainView.fxml")));
-        mainScene = new Scene(fxmlMain, 500, 600);
-        Parent fxmlLogged = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/loggedView.fxml")));
-        loggedScene = new Scene(fxmlLogged, 500, 600);
-        Parent fxmlCreateUser = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/createView.fxml")));
-        createUserScene = new Scene(fxmlCreateUser, 500, 600);
-        Parent fxmlCreateLogin = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/createLoginView.fxml")));
-        createLoginScene = new Scene(fxmlCreateLogin, 500, 600);
+        mainScene = loadScene("/view/mainView.fxml");
+        loggedScene = loadScene("/view/loggedView.fxml");
+        createUserScene = loadScene("/view/createView.fxml");
+        createLoginScene = loadScene("/view/createLoginView.fxml");
 
         // Título
         primaryStage.setTitle("Password Manager");
@@ -52,9 +48,12 @@ public class Main extends Application {
 
         // Exibe a janela
         primaryStage.show();
-
     }
 
+    private Scene loadScene(String path) throws Exception {
+        Parent fxml = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(path)));
+        return new Scene(fxml, 500, 600);
+    }
 
     public static void changeScreen(String src) {
         switch (src) {
@@ -76,7 +75,6 @@ public class Main extends Application {
                 break;
         }
     }
-
 
     public static void main(String[] args) {
         launch(args);
