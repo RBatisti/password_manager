@@ -14,22 +14,13 @@ public class User {
         this.keyLogin = keyLogins;
     }
 
-
-    public User(int ID, byte[] keyLogins) {
-        this.ID = ID;
-        this.keyLogin = keyLogins;
-    }
-
-
     public int getID() {
         return this.ID;
     }
 
-
     public ArrayList<ArrayList<String>> getLogins() {
         return this.logins;
     }
-
 
     public byte[] getKeyLogin() {
         return keyLogin;
